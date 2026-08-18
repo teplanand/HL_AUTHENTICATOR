@@ -1,0 +1,807 @@
+{
+  "info": {
+    "_postman_id": "b1c356b5-57b3-4be0-9ed0-765a85fc3133",
+    "name": "WMS",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "52020904"
+  },
+  "item": [
+    {
+      "name": "rack",
+      "item": [
+        {
+          "name": "https://wmsapi.techelecon.in/api/rack",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImlhdCI6MTc3NjMxMTEzOSwiZXhwIjoxNzc2Mzk3NTM5fQ.hWgvSeL1druqjWP6Phkce4avLjmjk9sgz-0PNSclAH4",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"warehouse_id\": \"6\",\r\n  \"zone_id\": \"1\",\r\n  \"rack_code\": \"RACK-A122\",\r\n  \"rack_description\": \"Primary rack for fast moving items\",\r\n  \"status\": \"ACTIVE\",\r\n  \"created_by\": \"admin\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/api/rack",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "rack"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "https://wmsapi.techelecon.in/api/rack-get",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImlhdCI6MTc3NjMxMTEzOSwiZXhwIjoxNzc2Mzk3NTM5fQ.hWgvSeL1druqjWP6Phkce4avLjmjk9sgz-0PNSclAH4",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/api/rack",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "rack"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "https://wmsapi.techelecon.in/api/rack-update",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImlhdCI6MTc3NjMxMTEzOSwiZXhwIjoxNzc2Mzk3NTM5fQ.hWgvSeL1druqjWP6Phkce4avLjmjk9sgz-0PNSclAH4",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"warehouse_id\": \"6\",\r\n  \"zone_id\": \"1\",\r\n  \"rack_code\": \"RACK-A122\",\r\n  \"rack_description\": \"Primary rack for fast moving items\",\r\n  \"status\": \"ACTIVE\",\r\n  \"updated_by\": \"admin\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/api/rack/18",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "rack",
+                "18"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "pallet",
+      "item": [
+        {
+          "name": "https://wmsapi.techelecon.in/api/pallet",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImlhdCI6MTc3NjMxMTEzOSwiZXhwIjoxNzc2Mzk3NTM5fQ.hWgvSeL1druqjWP6Phkce4avLjmjk9sgz-0PNSclAH4",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"warehouse_id\": \"4\",\r\n  \"pallet_code\":\"P16\",\r\n  \"zone_id\": \"1\",\r\n  \"rack_id\": \"2\",\r\n  \"max_capacity\": \"100\",\r\n  \"status\": \"AVAILABLE\",\r\n  \"created_by\": \"admin\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/api/pallet",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "pallet"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "https://wmsapi.techelecon.in/api/pallet-get",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"warehouse_id\": \"6\",\r\n  \"zone_id\": \"1\",\r\n  \"rack_id\": \"2\",\r\n  \"sub_inventory\": \"S002\",\r\n  \"location\": \"A1-01\",\r\n  \"max_capacity\": 100,\r\n  \"status\": \"AVAILABLE\",\r\n  \"is_qr_available\": true,\r\n  \"created_by\": \"admin\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/api/pallet",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "pallet"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "https://wmsapi.techelecon.in/api/pallet-update",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImlhdCI6MTc3NjMxMTEzOSwiZXhwIjoxNzc2Mzk3NTM5fQ.hWgvSeL1druqjWP6Phkce4avLjmjk9sgz-0PNSclAH4",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"warehouse_id\": \"6\",\r\n  \"zone_id\": \"1\",\r\n  \"rack_id\": \"2\",\r\n  \"max_capacity\": 200,\r\n  \"status\": \"AVAILABLE\",\r\n  \"updated_by\": \"admin\",\r\n  \"pallet_code\": \"P3\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/api/pallet/5",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "pallet",
+                "5"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "zone",
+      "item": [
+        {
+          "name": "https://wmsapi.techelecon.in/api/zone",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"warehouse_id\": \"6\",\r\n  \"zone_code\": \"Z0011\",\r\n  \"zone_title\": \"Zone B\",\r\n  \"zone_description\": \"First zone in warehouse\",\r\n  \"status\": \"ACTIVE\",\r\n  \"created_by\": \"admin\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/api/zone",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "zone"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "https://wmsapi.techelecon.in/api/zone-get",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"warehouse_id\": \"6\",\r\n  \"zone_code\": \"Z001\",\r\n  \"zone_title\": \"Zone A\",\r\n  \"zone_description\": \"First zone in warehouse\",\r\n  \"status\": \"ACTIVE\",\r\n  \"created_by\": \"admin\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/api/zone",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "zone"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "https://wmsapi.techelecon.in/api/zone-update",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"warehouse_id\": \"6\",\r\n  \"zone_code\": \"Z0011\",\r\n  \"zone_title\": \"Zone BBB\",\r\n  \"zone_description\": \"First zone in warehouse\",\r\n  \"status\": \"ACTIVE\",\r\n  \"updated_by\": \"admin\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/api/zone/18",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "zone",
+                "18"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "warehouse",
+      "item": [
+        {
+          "name": "https://wmsapi.techelecon.in/api/warehouse",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"org_id\": \"ORG1\",\r\n  \"warehouse_code\": \"WH1234152167\",\r\n  \"warehouse_name\": \"Main Warehouse\",\r\n  \"created_by\":\"admin\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/api/warehouse",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "warehouse"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "https://wmsapi.techelecon.in/api/warehouse-get",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"org_id\": \"ORG1\",\r\n  \"warehouse_code\": \"WH1234\",\r\n  \"warehouse_name\": \"Main Warehouse\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/api/warehouse",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "warehouse"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "https://wmsapi.techelecon.in/api/warehouse-update",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"org_id\": \"ORG1\",\r\n  \"warehouse_code\": \"WH123456\",\r\n  \"warehouse_name\": \"Main Warehouse\",\r\n  \"status\":\"INACTIVE\",\r\n  \"updated_by\":\"admin\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/api/warehouse/6",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "warehouse",
+                "6"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "https://wmsapi.techelecon.in/api/warehouse/dashboard?warehouse_id=''",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/api/warehouse/dashboard?warehouse_id=6",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "warehouse",
+                "dashboard"
+              ],
+              "query": [
+                {
+                  "key": "warehouse_id",
+                  "value": "6"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "item",
+      "item": [
+        {
+          "name": "https://wmsapi.techelecon.in/api/item",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "oracle_code",
+                  "value": "ORA12345",
+                  "type": "text",
+                  "uuid": "85fa40ef-6a39-4dda-bc38-7943a61f2df2"
+                },
+                {
+                  "key": "sub_loc_id",
+                  "value": "10",
+                  "type": "text",
+                  "uuid": "25110cc9-e1a8-4e01-a664-e6f091dc1925"
+                },
+                {
+                  "key": "pallet_id",
+                  "value": "1",
+                  "type": "text",
+                  "uuid": "0d3ed6d7-23a0-46f0-b48f-8e54371abad3"
+                },
+                {
+                  "key": "rack_id",
+                  "value": "1",
+                  "type": "text",
+                  "uuid": "3f5d7569-d029-4053-8203-bd5feac6531a"
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "uuid": "d208d627-adde-4619-a310-3aa9402ebee0",
+                  "src": "/C:/Users/JanviHPandya/Downloads/distribution-warehouse-illustration.png"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{host}}/api/item",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "item"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "https://wmsapi.techelecon.in/api/item-get",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImlhdCI6MTc3NjMxMTEzOSwiZXhwIjoxNzc2Mzk3NTM5fQ.hWgvSeL1druqjWP6Phkce4avLjmjk9sgz-0PNSclAH4",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"org_id\": \"ORG1\",\r\n  \"warehouse_code\": \"WH1\",\r\n  \"warehouse_name\": \"Main Warehouse\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/api/item/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "item",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "https://wmsapi.techelecon.in/api/item-update",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "sub_loc_id",
+                  "value": "103",
+                  "type": "text",
+                  "uuid": "664af27a-f276-450c-a263-5820fd57ea67"
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "uuid": "a6169da3-5444-4ebe-8d75-d29b8cb5135e",
+                  "src": "/C:/Users/JanviHPandya/Downloads/37420463_2207.i105.010.S.m005.c13.isometric warehouse interior isolated.jpg"
+                },
+                {
+                  "key": "locator",
+                  "value": "Test",
+                  "type": "text",
+                  "uuid": "f3777b1e-ade3-4e32-bbe2-61434c503523"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{host}}/api/item/37",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "item",
+                "37"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "item_transaction",
+      "item": [
+        {
+          "name": "https://wmsapi.techelecon.in/api/transaction",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImlhdCI6MTc3NjMxMTEzOSwiZXhwIjoxNzc2Mzk3NTM5fQ.hWgvSeL1druqjWP6Phkce4avLjmjk9sgz-0PNSclAH4",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"oracle_code\": \"ITEM12345\",\r\n  \"sub_loc_id\": \"101\",\r\n  \"pallet_id\": \"202\",\r\n  \"rack_id\": \"4\",\r\n  \"supplier_id\":\"123423\",\r\n  \"operation\":\"2\",\r\n  \"qty\": \"2000\",\r\n  \"created_by\": \"admin_user\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/api/transaction",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "transaction"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "https://wmsapi.techelecon.in/api/transaction-get",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImlhdCI6MTc3NjMxMTEzOSwiZXhwIjoxNzc2Mzk3NTM5fQ.hWgvSeL1druqjWP6Phkce4avLjmjk9sgz-0PNSclAH4",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"org_id\": \"ORG1\",\r\n  \"warehouse_code\": \"WH1\",\r\n  \"warehouse_name\": \"Main Warehouse\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/api/transaction",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "transaction"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "https://wmsapi.techelecon.in/files/1776162593585-Screenshot%202026-02-23%20115459.png",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{host}}/files/1776415396816-37420463_2207.i105.010.S.m005.c13.isometric warehouse interior isolated.jpg",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "files",
+            "1776415396816-37420463_2207.i105.010.S.m005.c13.isometric warehouse interior isolated.jpg"
+          ]
+        }
+      },
+      "response": []
+    }
+   
+  ],
+  "variable": [
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "host",
+      "value": ""
+    }
+  ]
+}

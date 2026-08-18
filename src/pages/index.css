@@ -1,0 +1,198 @@
+/* PremiumMobileDesign.css */
+
+/* --- Main Container --- */
+.premium-mobile-view {
+  max-width: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+  background: #f9fafc;
+}
+
+.content-card {
+  background: white;
+  border-radius: 16px;
+}
+
+/* --- Premium Typography --- */
+.premium-content {
+  color: #2d3748;
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+  list-style-position: outside;
+}
+
+.premium-content h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #1a365d;
+  margin: 1.2rem 0 0.8rem;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #f0f4f8;
+  background: linear-gradient(90deg, #3182ce 0%, transparent 100%);
+  background-size: 40% 3px;
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+}
+
+.premium-content h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2c5282;
+  margin: 1.5rem 0 0.8rem;
+  position: relative;
+  padding-left: 16px;
+}
+
+.premium-content h2:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 6px;
+  height: 60%;
+  width: 4px;
+  background: #4299e1;
+  border-radius: 4px;
+}
+
+.premium-content h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #2b6cb0;
+  margin: 1.2rem 0 0.6rem;
+}
+
+.premium-content p {
+  margin-bottom: 1.2rem;
+  font-size: 1.05rem;
+  color: #4a5568;
+}
+
+/* --- Enhanced Lists --- */
+/* .premium-content ul, */
+/* .premium-content ol {
+  margin-left: 8px;
+  padding-left: 24px;
+  margin-bottom: 1.5rem;
+} */
+
+/* .premium-content li {
+  margin-bottom: 0.8rem;
+  position: relative;
+  padding-left: 8px;
+} */
+
+/* .premium-content ul li:before {
+  content: "•";
+  color: #4299e1;
+  font-weight: bold;
+  display: inline-block;
+  width: 1em;
+  margin-left: -1em;
+} */
+
+/* .premium-content ol {
+  counter-reset: list-counter;
+} */
+
+/* .premium-content ol li {
+  counter-increment: list-counter;
+} */
+
+.premium-content ol li:before {
+  content: counter(list-counter) ".";
+  color: #4299e1;
+  font-weight: bold;
+  position: absolute;
+  left: -5px;
+}
+
+/* --- Premium Tables --- */
+.premium-content table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 1.8rem 0;
+  font-size: 0.95rem;
+  overflow-x: auto;
+  display: block;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.04);
+}
+
+.premium-content th,
+.premium-content td {
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 1px solid #edf2f7;
+}
+
+.premium-content th {
+  background-color: #f8fafc;
+  font-weight: 600;
+  color: #2d3748;
+  position: sticky;
+  top: 0;
+}
+
+.premium-content tr:last-child td {
+  border-bottom: none;
+}
+
+/* --- Medical Highlight Blocks --- */
+.premium-content blockquote {
+  background: #ebf8ff;
+  border-left: 4px solid #4299e1;
+  margin: 1.5rem 0;
+  padding: 1.2rem 1.5rem;
+  border-radius: 0 8px 8px 0;
+  font-size: 1rem;
+}
+
+/* --- HR Styling --- */
+.premium-content hr {
+  border: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(66, 153, 225, 0.1) 0%,
+    rgba(66, 153, 225, 0.6) 50%,
+    rgba(66, 153, 225, 0.1) 100%
+  );
+  margin: 2rem 0;
+}
+
+/* --- Emoji Styling --- */
+.premium-content .emoji {
+  font-size: 1.2em;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 480px) {
+  .content-card {
+    border-radius: 12px;
+  }
+
+  .premium-content h1 {
+    font-size: 1.6rem;
+    background-size: 30% 3px;
+  }
+
+  .premium-content h2 {
+    font-size: 1.3rem;
+  }
+
+  .premium-content h3 {
+    font-size: 1.15rem;
+  }
+
+  .premium-content table {
+    font-size: 0.85rem;
+  }
+
+  .premium-content th,
+  .premium-content td {
+    padding: 12px 14px;
+  }
+}

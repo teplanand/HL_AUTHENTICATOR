@@ -1,0 +1,734 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Default module",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [],
+  "paths": {
+    "/api/auth/login": {
+      "post": {
+        "summary": "Login",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "username": "",
+                "password": ""
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "response": true,
+                  "message": "Success",
+                  "data": {
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5YjIwZTdjZi0yNzg4LTQzYzEtYmM0MS1mOGE2OTQ1YWExYzUiLCJpYXQiOjE3Nzc4ODg0MDUsImV4cCI6MTc3Nzg4OTMwNX0._CkpNLECUvDxLK3JFNzDplQN5x9LXg818vpDA1vXwQQ",
+                    "roles": [
+                      "SUPERADMIN"
+                    ]
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/dashboard": {
+      "post": {
+        "summary": "DashboardApi",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "examples": {}
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "response": true,
+                  "message": "success",
+                  "data": [
+                    {
+                      "appId": "57da4534-8269-455a-a741-98710709fa60",
+                      "appDesc": "Test",
+                      "appTitle": "Test App"
+                    },
+                    {
+                      "appId": "63c89c7f-8afb-4132-97ff-ae2d18baa520",
+                      "appDesc": "Authenticator",
+                      "appTitle": "Authenticator"
+                    }
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/users/getUsers": {
+      "post": {
+        "summary": "GetUsersListByOrganizationAndDivision",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "orgId": "11036d60-38c1-4810-bb4b-fbd97f19974a",
+                "divId": "3965687b-8e61-4a80-ac48-8c2e9d1f12ff"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "response": true,
+                  "message": "Success",
+                  "data": [
+                     
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/roles/createRole": {
+      "post": {
+        "summary": "Add New Role",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "appId": "363f26cd-4ff5-483c-bbf5-983fa77b08a2",
+                "roleName": "Test Role",
+                "roleDesc": "Test",
+                "roleCode": "helo"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "response": true,
+                  "message": "Role created Successfully",
+                  "data": null
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/roles/getRoles/363f26cd-4ff5-483c-bbf5-983fa77b08a2": {
+      "get": {
+        "summary": "GetRoleByApp",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "response": true,
+                  "message": "Success",
+                  "data": [
+                    {
+                      "roleName": "Test Role",
+                      "roleId": 6
+                    }
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/organizations/getDivision/63c89c7f-8afb-4132-97ff-ae2d18baa520": {
+      "get": {
+        "summary": "GetDivisions",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "response": true,
+                  "message": "Success",
+                  "data": [
+                    {
+                      "divName": "Helical",
+                      "divId": "2e1ce9c6-b4fb-4817-9a65-515f88b1c54b"
+                    }
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/organizations/getOrganizations": {
+      "get": {
+        "summary": "GetOrganizations",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "response": true,
+                  "message": "Success",
+                  "data": [
+                    {
+                      "orgTitle": "Gear Test",
+                      "orgId": "3b2b7ef7-3e4c-483a-9dea-f75a45a65320"
+                    },
+                    {
+                      "orgTitle": "TEPL",
+                      "orgId": "e8ec88d1-d1f7-4f4e-a507-b47ba6a84b7f"
+                    }
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/apps/create": {
+      "post": {
+        "summary": "CreateNewApp",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "appTitle": "GatePass System",
+                "appDesc": "GatePass System",
+                "endDate": "2027-05-04 15:29:02.683489",
+                "appCode": "GPASS",
+                "orgIds": [
+                  "11036d60-38c1-4810-bb4b-fbd97f19974a",
+                  "6cf02920-a146-4a24-894c-8ff1cf645882"
+                ],
+                "isPublic": true
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "success": false,
+                  "message": "Forbidden resource",
+                  "data": null
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/auth/getAccessToken": {
+      "post": {
+        "summary": "GetAccessToken",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "userId": "9b20e7cf-2788-43c1-bc41-f8a6945aa1c5",
+                "refreshToken": "74c26f4a5c7f4d7077ccbdb971f663ba5dc5e1236fde53e6b270e6d114e598f2304645a9818f7f80aaaa8bc2490fb78195af003e3a94eb0ce2dcf77fd8567b50"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "success": false,
+                  "message": "Refresh token not found",
+                  "data": null
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "summary": "Logout",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "userId": "0adc0ed2-25af-4c7d-b066-503e68a745e8",
+                "refreshToken": "01420724f46fcf389fc744d150f8829f9fef87d65b722279c09ff7a8176222377bc9edea6fecbed37f40eaa82c0da05234af4786899fbcbabf025a80e98ef245"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "response": true,
+                  "message": "Success",
+                  "data": null
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/modules/getModules/363f26cd-4ff5-483c-bbf5-983fa77b08a2": {
+      "get": {
+        "summary": "GetAppModules",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "response": true,
+                  "message": "Success",
+                  "data": [
+                    {
+                      "moduleId": "d4ef932f-5038-43c5-816a-1ba2fd401ac2",
+                      "moduleTitle": "Test Module"
+                    }
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/modules/addModule": {
+      "post": {
+        "summary": "CreateAppModule",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "moduleTitle": "Demo Module",
+                "moduleCode": "DMM",
+                "moduleDesc": "Demo module",
+                "appId": "363f26cd-4ff5-483c-bbf5-983fa77b08a2"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "response": true,
+                  "message": "Module addedd successfully",
+                  "data": null
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/apps/assignModuleRole": {
+      "post": {
+        "summary": "AssignModuleRole",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "moduleId": "56751751-680d-4f3c-ad66-a0fca8fd5101",
+                "roleId": 6
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "response": true,
+                  "message": "Role assigned successfully",
+                  "data": null
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/auth/assignRole": {
+      "post": {
+        "summary": "AssignUserRole",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "appId": "87814aab-f2b6-4e77-b31b-3636d0cfb805",
+                "userId": "d9698a66-a319-4c92-afff-2e8b9a040848",
+                "roleId": 13,
+                "endDate": "2027-05-22 09:46:17.689"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "response": true,
+                  "message": "Success",
+                  "data": null
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/appsuser/addUserToApp": {
+      "post": {
+        "summary": "AddUserToApp",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "appId": "363f26cd-4ff5-483c-bbf5-983fa77b08a2",
+                "users": [
+                  "eb63ceb9-1130-4df7-9a51-a3007ca53984",
+                  "2de97f6d-0960-412d-8326-9937cab8677a"
+                ],
+                "endDate": "2027-05-22 11:22:38.315292"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "success": false,
+                  "message": "App not available in user's current organization",
+                  "data": null
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "responses": {},
+    "securitySchemes": {
+      "bearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://authenticator.techelecon.in/",
+      "description": "Prod Env"
+    }
+  ],
+  "security": []
+}
