@@ -2,7 +2,7 @@
 
 This project works as a `central auth shell` in the following way:
 
-- `signin` is common across all apps
+- `signin` is common across all apps 1
 - after login, users see the apps they have access to on the `/apps` page
 - if an app has a remote URL configured in the environment, the shell redirects to the deployed module
 - if no remote URL is configured, it falls back to using the current internal route
