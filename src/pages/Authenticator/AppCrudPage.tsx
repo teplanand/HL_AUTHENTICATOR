@@ -40,6 +40,7 @@ type AppFormState = {
   appTitle: string;
   appDesc: string;
   appCode: string;
+  iconUrl: string;
   hrmsId: string;
   frontUrl: string;
   backendUrl: string;
@@ -105,6 +106,7 @@ const createInitialAppForm = (): AppFormState => ({
   appTitle: "",
   appDesc: "",
   appCode: "",
+  iconUrl: "",
   hrmsId: "",
   frontUrl: "",
   backendUrl: "",
@@ -152,6 +154,8 @@ const AppCrudPage = () => {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [form, setForm] = React.useState<AppFormState>(createInitialAppForm);
   const [formError, setFormError] = React.useState("");
+  const [iconFile, setIconFile] = React.useState<File | null>(null);
+  const [iconPreviewUrl, setIconPreviewUrl] = React.useState("");
   const [paginationModel, setPaginationModel] = React.useState<GridPaginationModel>({
     page: 0,
     pageSize: 10,
@@ -184,6 +188,15 @@ const AppCrudPage = () => {
       window.localStorage.setItem(LOCAL_APP_STORAGE_KEY, JSON.stringify(localApps));
     }
   }, [localApps]);
+
+  React.useEffect(
+    () => () => {
+      if (iconPreviewUrl.startsWith("blob:")) {
+        URL.revokeObjectURL(iconPreviewUrl);
+      }
+    },
+    [iconPreviewUrl],
+  );
 
   const organizations = React.useMemo(
     () => organizationsResponse?.data ?? [],
@@ -282,24 +295,31 @@ const AppCrudPage = () => {
       appTitle: app.appTitle || "",
       appDesc: app.appDesc || "",
       appCode: app.appCode || "",
+      iconUrl: app.iconUrl || "",
       hrmsId: app.hrmsId || "",
       frontUrl: app.frontUrl || "",
       backendUrl: app.backendUrl || "",
       orgIds: normalizeOrgIds(app.orgIds ?? (app as AuthenticatorApp & { orgId?: string })?.orgId),
       isPublic: Boolean(app.isPublic),
     });
+    setIconFile(null);
+    setIconPreviewUrl("");
     setFormError("");
     setDrawerOpen(true);
   }, []);
 
   const openCreateDrawer = React.useCallback(() => {
     setForm(createInitialAppForm());
+    setIconFile(null);
+    setIconPreviewUrl("");
     setFormError("");
     setDrawerOpen(true);
   }, []);
 
   const closeDrawer = React.useCallback(() => {
     setDrawerOpen(false);
+    setIconFile(null);
+    setIconPreviewUrl("");
     setFormError("");
   }, []);
 
@@ -319,6 +339,22 @@ const AppCrudPage = () => {
       ...current,
       isPublic: event.target.checked,
     }));
+  };
+
+  const handleIconChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const nextFile = event.target.files?.[0] ?? null;
+
+    if (!nextFile) {
+      return;
+    }
+
+    setIconFile(nextFile);
+    setIconPreviewUrl(URL.createObjectURL(nextFile));
+  };
+
+  const clearSelectedIcon = () => {
+    setIconFile(null);
+    setIconPreviewUrl("");
   };
 
   const handleSave = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -362,6 +398,7 @@ const AppCrudPage = () => {
         appTitle,
         appDesc,
         appCode,
+        icon: iconFile,
         hrmsId,
         frontUrl,
         backendUrl,
@@ -392,6 +429,7 @@ const AppCrudPage = () => {
               appTitle,
               appDesc,
               appCode,
+              iconUrl: matchedApp?.iconUrl,
               hrmsId,
               frontUrl,
               backendUrl,
@@ -530,6 +568,8 @@ const AppCrudPage = () => {
     );
   }
 
+  const resolvedIconPreview = iconPreviewUrl || form.iconUrl;
+
   return (
     <Box sx={{ display: "grid", gap: 3 }}>
       <ReusableDataGrid
@@ -597,6 +637,85 @@ const AppCrudPage = () => {
                 onChange={handleFieldChange("appDesc")}
                 fullWidth
               />
+
+              <Box>
+                <Typography variant="body2" fontWeight={700} sx={{ mb: 1 }}>
+                  App Icon
+                </Typography>
+                <Stack
+                  direction="row"
+                  spacing={1.5}
+                  alignItems="center"
+                  sx={{
+                    p: 1.5,
+                    border: "1px solid",
+                    borderColor: "divider",
+                    borderRadius: 2,
+                    bgcolor: alpha("#F8FAFC", 0.65),
+                  }}
+                >
+                  <Box
+                    sx={{
+                      width: 56,
+                      height: 56,
+                      borderRadius: 2,
+                      overflow: "hidden",
+                      bgcolor: alpha("#0F172A", 0.08),
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexShrink: 0,
+                    }}
+                  >
+                    {resolvedIconPreview ? (
+                      <Box
+                        component="img"
+                        src={resolvedIconPreview}
+                        alt="App icon preview"
+                        sx={{ width: "100%", height: "100%", objectFit: "cover" }}
+                      />
+                    ) : (
+                      <Typography variant="caption" color="text.secondary">
+                        No icon
+                      </Typography>
+                    )}
+                  </Box>
+
+                  <Stack spacing={0.75} sx={{ minWidth: 0, flex: 1 }}>
+                    <Button
+                      variant="outlined"
+                      component="label"
+                      sx={{ alignSelf: "flex-start", borderRadius: 999 }}
+                    >
+                      Upload Image
+                      <input
+                        hidden
+                        type="file"
+                        accept="image/*"
+                        onChange={handleIconChange}
+                        onClick={(event) => {
+                          event.currentTarget.value = "";
+                        }}
+                      />
+                    </Button>
+                    <Typography variant="caption" color="text.secondary">
+                      {iconFile
+                        ? `${iconFile.name} will be sent in form-data as icon.`
+                        : "PNG, JPG, SVG or any image file can be uploaded."}
+                    </Typography>
+                    {iconFile ? (
+                      <Button
+                        variant="text"
+                        color="inherit"
+                        onClick={clearSelectedIcon}
+                        sx={{ alignSelf: "flex-start", minWidth: 0, px: 0 }}
+                      >
+                        Remove selected image
+                      </Button>
+                    ) : null}
+                  </Stack>
+                </Stack>
+              </Box>
 
               <TextField
                 label="HRMS ID"

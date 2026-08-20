@@ -42,9 +42,7 @@ import {
 } from "@mui/icons-material";
 import type { Navigation } from "@toolpad/core/AppProvider";
 
- import AdvancePaymentDashboard from "../src/pages/AdvanceVoucher/Dashboard";
-import SupplierPage from "../src/pages/AdvanceVoucher/Supplier";
-import POPage from "../src/pages/AdvanceVoucher/PO";
+ 
 import EvidanceDashboard from "../src/pages/EvidanceCollection/Dashboard";
 import EvidanceAdminDashboard from "../src/pages/EvidanceCollection/AdminDashboard";
 import EvidanceUserRegistrationPage from "../src/pages/EvidanceCollection/UserRegistration";
@@ -87,6 +85,7 @@ import ProjectManagementBacklogsPage from "../src/pages/ProjectManagement/backlo
 import ProjectManagementKanbanPage from "../src/pages/ProjectManagement/kanban";
 import ProjectManagementSupportPage from "../src/pages/ProjectManagement/support";
 import ProjectManagementInvoicesPage from "../src/pages/ProjectManagement/invoices";
+import OrderTrackingReportsPage from "../src/pages/OrderTracking/reports";
 // import ProjectManagementReportsPage from "../src/pages/ProjectManagement/reports";
 
 //test
@@ -170,84 +169,13 @@ export const isPageVisibleInNavigation = (
 ) => !page.hideInNavigation;
 
 export const moduleRoutes: ModuleRouteConfig[] = withModuleCodes([
-  {
-    module: "advance-voucher",
-    children: [
-      {
-        name: "Dashboard",
-        icon: <DashboardOutlinedIcon />,
-        roles: ["admin"],
-        path: "/dashboard",
-        element: <AdvancePaymentDashboard type="supplier" />,
-      },
-      {
-        name: "Supplier",
-        icon: <BusinessIcon />,
-        roles: ["admin"],
-        path: "/supplier",
-        element: <SupplierPage />,
-      },
-      {
-        name: "PO",
-        icon: <ReceiptIcon />,
-        roles: ["admin"],
-        path: "/po",
-        element: <POPage />,
-      },
-    ],
-  },
-
-  {
-    module: "purchase-order",
-    children: [
-      {
-        name: "PO Dashboard",
-        icon: <DashboardOutlinedIcon />,
-        roles: ["admin"],
-        path: "/dashboard",
-        element: <AdvancePaymentDashboard type="supplier" />,
-      },
-      {
-        name: "PO Supplier",
-        icon: <BusinessIcon />,
-        roles: ["admin"],
-        path: "/supplier",
-        element: <SupplierPage />,
-      },
-      {
-        name: "PO PO",
-        icon: <ReceiptIcon />,
-        roles: ["admin"],
-        path: "/po",
-        element: <POPage />,
-      },
-    ],
-  },
+ 
+  
 
   {
     module: "supplier-portal",
     children: [
-      {
-        name: "SP Dashboard",
-        icon: <DashboardOutlinedIcon />,
-        roles: ["admin"],
-        path: "/dashboard",
-        element: <AdvancePaymentDashboard type="supplier" />,
-      },
-      {
-        name: "sp Supplier",
-        icon: <BusinessIcon />,
-        roles: ["admin"],
-        path: "/supplier",
-        element: <SupplierPage />,
-      },
-      {
-        name: "sp PO",
-        icon: <ReceiptIcon />,
-        roles: ["admin"],
-        path: "/po",
-        element: <POPage />,
-      },
+       
     ],
   },
 
@@ -307,32 +235,7 @@ export const moduleRoutes: ModuleRouteConfig[] = withModuleCodes([
   },
 
 
-  {
-    module: "hr-management",
-    children: [
-      {
-        name: "HR Dashboard",
-        icon: <DashboardOutlinedIcon />,
-        roles: ["admin"],
-        path: "/dashboard",
-        element: <AdvancePaymentDashboard type="supplier" />,
-      },
-      {
-        name: "HR Supplier",
-        icon: <BusinessIcon />,
-        roles: ["admin"],
-        path: "/supplier",
-        element: <SupplierPage />,
-      },
-      {
-        name: "HR PO",
-        icon: <ReceiptIcon />,
-        roles: ["admin"],
-        path: "/po",
-        element: <POPage />,
-      },
-    ],
-  },
+ 
 
   {
     module: "order-tracking",
@@ -350,6 +253,13 @@ export const moduleRoutes: ModuleRouteConfig[] = withModuleCodes([
         roles: ["admin", "user"],
         path: "/itemplan",
         element: <OrderTrackingConfiguration />,
+      },
+      {
+        name: "Reports",
+        icon: <AssessmentIcon />,
+        roles: ["admin", "user"],
+        path: "/reports",
+        element: <OrderTrackingReportsPage />,
       },
 
       // {

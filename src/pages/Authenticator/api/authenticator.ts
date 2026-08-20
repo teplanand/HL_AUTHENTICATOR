@@ -13,7 +13,13 @@ export interface AuthenticatorApiResponse<TData> {
   message?: string;
   data?: TData;
 }
-//test 123
+
+export interface AuthenticatorDashboardAppsResponse
+  extends AuthenticatorApiResponse<AuthenticatorApp[]> {
+  name?: string;
+  orgIconUrl?: string;
+}
+
 export interface AuthenticatorLoginPayload {
   username: string;
   password: string;
@@ -31,6 +37,7 @@ export interface AuthenticatorApp {
   appDesc: string;
   appTitle: string;
   appCode?: string;
+  iconUrl?: string;
   hrmsId?: string;
   frontUrl?: string;
   backendUrl?: string;
@@ -433,6 +440,7 @@ export interface CreateAuthenticatorAppPayload {
   appTitle: string;
   appDesc: string;
   appCode: string;
+  icon?: File | null;
   hrmsId?: string;
   frontUrl?: string;
   backendUrl?: string;
@@ -606,6 +614,52 @@ type AuthenticatorAppApiRecord = Partial<AuthenticatorApp> & {
   end_date?: string;
   orgId?: string;
   hrmsId?: string;
+  icon?: string;
+  iconUrl?: string;
+};
+
+const appendAuthenticatorFormValue = (
+  formData: FormData,
+  key: string,
+  value: string | number | boolean | null | undefined,
+) => {
+  if (value === null || value === undefined) {
+    return;
+  }
+
+  const normalizedValue = String(value).trim();
+
+  if (!normalizedValue) {
+    return;
+  }
+
+  formData.append(key, normalizedValue);
+};
+
+const buildAuthenticatorAppFormData = (payload: CreateAuthenticatorAppPayload) => {
+  const formData = new FormData();
+
+  appendAuthenticatorFormValue(formData, "appId", payload.appId);
+  appendAuthenticatorFormValue(formData, "appTitle", payload.appTitle);
+  appendAuthenticatorFormValue(formData, "appDesc", payload.appDesc);
+  appendAuthenticatorFormValue(formData, "appCode", payload.appCode);
+  appendAuthenticatorFormValue(formData, "hrmsId", payload.hrmsId);
+  appendAuthenticatorFormValue(formData, "frontUrl", payload.frontUrl);
+  appendAuthenticatorFormValue(formData, "backendUrl", payload.backendUrl);
+  formData.append("isPublic", String(Boolean(payload.isPublic)));
+
+  payload.orgIds
+    .map((orgId) => String(orgId).trim())
+    .filter(Boolean)
+    .forEach((orgId) => {
+      formData.append("orgIds", orgId);
+    });
+
+  if (payload.icon instanceof File) {
+    formData.append("icon", payload.icon);
+  }
+
+  return formData;
 };
 
 const normalizeAppValue = (value?: string | number | null) =>
@@ -736,6 +790,7 @@ const normalizeAuthenticatorApp = (raw: unknown): AuthenticatorApp | null => {
       matchedTemplate?.appCode ||
       extractAppCodeFromUrl(frontUrl) ||
       buildManagedAppCode(appTitle),
+    iconUrl: String(app.iconUrl ?? app.icon ?? "").trim() || undefined,
     hrmsId: String(app.hrmsId ?? "").trim() || undefined,
     frontUrl: frontUrl || undefined,
     backendUrl: String(app.backendUrl ?? "").trim() || undefined,
@@ -749,9 +804,19 @@ const normalizeAuthenticatorApp = (raw: unknown): AuthenticatorApp | null => {
   };
 };
 
-const normalizeAuthenticatorAppListResponse = (
+const getFirstFilledDashboardString = (...values: Array<unknown>) => {
+  for (const value of values) {
+    if (typeof value === "string" && value.trim()) {
+      return value.trim();
+    }
+  }
+
+  return undefined;
+};
+
+const normalizeAuthenticatorDashboardAppsResponse = (
   raw: unknown,
-): AuthenticatorApiResponse<AuthenticatorApp[]> => {
+): AuthenticatorDashboardAppsResponse => {
   const normalizeApps = (apps: unknown[]) =>
     apps
       .map((app) => normalizeAuthenticatorApp(app))
@@ -766,7 +831,16 @@ const normalizeAuthenticatorAppListResponse = (
   }
 
   if (raw && typeof raw === "object") {
-    const response = raw as AuthenticatorApiResponse<unknown[]> & Record<string, unknown>;
+    const response = raw as AuthenticatorApiResponse<unknown> & Record<string, unknown>;
+    const nestedPayload =
+      response.data && typeof response.data === "object" && !Array.isArray(response.data)
+        ? (response.data as Record<string, unknown>)
+        : null;
+    const appList = Array.isArray(response.data)
+      ? response.data
+      : Array.isArray(nestedPayload?.data)
+        ? nestedPayload.data
+        : [];
 
     return {
       response:
@@ -776,7 +850,14 @@ const normalizeAuthenticatorAppListResponse = (
             ? response.success
             : true,
       message: response.message ?? "Success",
-      data: Array.isArray(response.data) ? normalizeApps(response.data) : [],
+      name: getFirstFilledDashboardString(response.name, nestedPayload?.name),
+      orgIconUrl: getFirstFilledDashboardString(
+        response.orgIconUrl,
+        response.org_icon_url,
+        nestedPayload?.orgIconUrl,
+        nestedPayload?.org_icon_url,
+      ),
+      data: normalizeApps(appList),
     };
   }
 
@@ -814,7 +895,7 @@ export const authenticatorApi = createApi({
       }),
     }),
     getAuthenticatorDashboardApps: builder.query<
-      AuthenticatorApiResponse<AuthenticatorApp[]>,
+      AuthenticatorDashboardAppsResponse,
       void
     >({
       keepUnusedDataFor: 0,
@@ -824,7 +905,7 @@ export const authenticatorApi = createApi({
         body: {},
       }),
       transformResponse: (response: unknown) =>
-        normalizeAuthenticatorAppListResponse(response),
+        normalizeAuthenticatorDashboardAppsResponse(response),
       providesTags: ["AuthenticatorApps"],
     }),
     getAuthenticatorAppPermissionByRole: builder.query<
@@ -851,7 +932,7 @@ export const authenticatorApi = createApi({
         method: "GET",
       }),
       transformResponse: (response: unknown) =>
-        normalizeAuthenticatorAppListResponse(response),
+        normalizeAuthenticatorDashboardAppsResponse(response),
       providesTags: ["AuthenticatorApps"],
     }),
     getAuthenticatorOrganizations: builder.query<
@@ -1194,7 +1275,7 @@ export const authenticatorApi = createApi({
       query: (body) => ({
         url: "/api/apps/create",
         method: "POST",
-        body,
+        body: buildAuthenticatorAppFormData(body),
       }),
       invalidatesTags: ["AuthenticatorApps"],
     }),
@@ -1203,7 +1284,13 @@ export const authenticatorApi = createApi({
       SaveAuthenticatorAppPayload
     >({
       async queryFn(body, _api, _extraOptions, fetchWithBQ) {
-        const candidates: FetchArgs[] = [{ url: "/api/apps/create", method: "POST", body }];
+        const candidates: FetchArgs[] = [
+          {
+            url: "/api/apps/create",
+            method: "POST",
+            body: buildAuthenticatorAppFormData(body),
+          },
+        ];
 
         for (const candidate of candidates) {
           const result = await fetchWithBQ(candidate);

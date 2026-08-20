@@ -33,9 +33,12 @@ import {
   useLazyGetAuthenticatorAppPermissionByRoleQuery,
 } from "./Authenticator/api/authenticator";
 import {
+  getStoredDashboardMeta,
   getStoredAccessibleApps,
+  getStoredRefreshSession,
   getToken,
   setStoredAccessibleApps,
+  setStoredDashboardMeta,
 } from "../../shared/utils/auth";
 import { applyDynamicAppPermissions } from "./Authenticator/utils/appPermissionAccess";
 import { resolveDevelopedAppLaunchUrl } from "../../shared/data/developedApps";
@@ -133,28 +136,80 @@ const APP_CATALOG: AppCatalogEntry[] = [
 
 const normalizeValue = (value?: string) => String(value ?? "").trim().toLowerCase();
 
-const appendTokenToLaunchUrl = (launchUrl: string, token: string) => {
-  const trimmedUrl = String(launchUrl ?? "").trim();
-  const trimmedToken = String(token ?? "").trim();
+const normalizeImageUrl = (value?: string) => String(value ?? "").trim();
 
-  if (!trimmedUrl || !trimmedToken) {
+const isAbsoluteHttpUrl = (value: string) => /^https?:\/\//i.test(value);
+
+const appendLaunchParamsToHashRoute = (
+  hashValue: string,
+  params: Record<string, string>,
+) => {
+  const trimmedHash = String(hashValue ?? "").trim();
+
+  if (!trimmedHash.startsWith("#/") && !trimmedHash.startsWith("#!/")) {
+    return trimmedHash;
+  }
+
+  const hashPrefix = trimmedHash.startsWith("#!/") ? "#!/" : "#/";
+  const hashBody = trimmedHash.slice(hashPrefix.length);
+  const [hashPathWithQuery, nestedHash = ""] = hashBody.split("#", 2);
+  const [hashPath, hashQuery = ""] = hashPathWithQuery.split("?", 2);
+  const hashParams = new URLSearchParams(hashQuery);
+
+  Object.entries(params).forEach(([key, value]) => {
+    const trimmedValue = String(value ?? "").trim();
+
+    if (trimmedValue) {
+      hashParams.set(key, trimmedValue);
+    }
+  });
+
+  const nextHash = `${hashPrefix}${hashPath}${hashParams.toString() ? `?${hashParams.toString()}` : ""}`;
+  return nestedHash ? `${nextHash}#${nestedHash}` : nextHash;
+};
+
+const appendLaunchParamsToUrl = (
+  launchUrl: string,
+  params: Record<string, string>,
+) => {
+  const trimmedUrl = String(launchUrl ?? "").trim();
+  const filteredParams = Object.fromEntries(
+    Object.entries(params).filter(([, value]) => String(value ?? "").trim()),
+  );
+
+  if (!trimmedUrl || Object.keys(filteredParams).length === 0) {
     return trimmedUrl;
   }
 
   try {
     const url = new URL(trimmedUrl, window.location.origin);
-    url.searchParams.set("token", trimmedToken);
+    Object.entries(filteredParams).forEach(([key, value]) => {
+      url.searchParams.set(key, value);
+    });
 
-    if (/^https?:\/\//i.test(trimmedUrl)) {
+    if (isAbsoluteHttpUrl(trimmedUrl)) {
+      url.hash = appendLaunchParamsToHashRoute(url.hash, filteredParams);
       return url.toString();
     }
 
     return `${url.pathname}${url.search}${url.hash}`;
   } catch {
     const [urlWithoutHash, hashFragment = ""] = trimmedUrl.split("#", 2);
+    const nextQuery = new URLSearchParams();
+
+    Object.entries(filteredParams).forEach(([key, value]) => {
+      nextQuery.set(key, value);
+    });
+
     const querySeparator = urlWithoutHash.includes("?") ? "&" : "?";
-    const nextUrl = `${urlWithoutHash}${querySeparator}token=${encodeURIComponent(trimmedToken)}`;
-    return hashFragment ? `${nextUrl}#${hashFragment}` : nextUrl;
+    const nextUrl = `${urlWithoutHash}${querySeparator}${nextQuery.toString()}`;
+    const nextHash = hashFragment
+      ? isAbsoluteHttpUrl(trimmedUrl)
+        ? appendLaunchParamsToHashRoute(`#${hashFragment}`, filteredParams)
+        : `#${hashFragment}`
+      : "";
+
+    return `${nextUrl}${nextHash}`;
   }
 };
 
@@ -183,6 +238,7 @@ const AppPortal = () => {
   const [storedApps, setStoredApps] = useState<AuthenticatorApp[]>(() =>
     getStoredAccessibleApps() as AuthenticatorApp[],
   );
+  const [dashboardMeta, setDashboardMeta] = useState(() => getStoredDashboardMeta());
   const [loadingAppId, setLoadingAppId] = useState("");
 
   const { data: appsResponse, isLoading, isFetching, isError } =
@@ -194,8 +250,15 @@ const AppPortal = () => {
       return;
     }
 
+    const nextDashboardMeta = {
+      name: appsResponse.name,
+      orgIconUrl: appsResponse.orgIconUrl,
+    };
+
     setStoredAccessibleApps(appsResponse.data);
+    setStoredDashboardMeta(nextDashboardMeta);
     setStoredApps(appsResponse.data);
+    setDashboardMeta(nextDashboardMeta);
   }, [appsResponse]);
 
   const accessibleApps = appsResponse?.data ?? storedApps;
@@ -259,6 +322,8 @@ const AppPortal = () => {
       }
 
       const token = getToken();
+      const refreshSession = getStoredRefreshSession();
+      const refreshToken = refreshSession?.refreshToken?.trim();
 
       if (!token) {
         launchWindow.close();
@@ -266,7 +331,19 @@ const AppPortal = () => {
         return;
       }
 
-      launchWindow.location.assign(appendTokenToLaunchUrl(app.launchUrl, token));
+      if (!refreshToken) {
+        launchWindow.close();
+        toast.error("Refresh token malyo nathi. Please login again.");
+        return;
+      }
+
+      launchWindow.location.assign(
+        appendLaunchParamsToUrl(app.launchUrl, {
+          token,
+          refreshToken,
+          appId: app.appId,
+        }),
+      );
     } catch (error) {
       launchWindow.close();
       console.error("App permission fetch failed:", error);
@@ -303,7 +380,7 @@ const AppPortal = () => {
           borderBottom: `1px solid ${theme.palette.divider}`,
         }}
       >
-        <img src={logo} alt="Logo" className="h-8" />
+        <img src={dashboardMeta?.orgIconUrl || logo} alt="Organization Logo" className="h-8" />
 
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
           <NotificationDropdown />
@@ -362,6 +439,7 @@ const AppPortal = () => {
           >
             {sortedApps.map((app) => {
               const IconComponent = app.icon || AppsRoundedIcon;
+              const appIconUrl = normalizeImageUrl(app.iconUrl);
               const tooltipTitle = app.launchable
                 ? app.appTitle
                 : `${app.appTitle} (route not configured yet)`;
@@ -425,7 +503,20 @@ const AppPortal = () => {
                           }}
                         />
                       )}
-                      {app.image ? (
+                      {appIconUrl ? (
+                        <Box
+                          component="img"
+                          src={appIconUrl}
+                          alt={app.appTitle}
+                          sx={{
+                            width: { xs: 42, sm: 48, md: 52 },
+                            height: { xs: 42, sm: 48, md: 52 },
+                            objectFit: "contain",
+                            borderRadius: 2,
+                            opacity: loadingAppId === app.appId ? 0.24 : 1,
+                          }}
+                        />
+                      ) : app.image ? (
                         <Box
                           component="img"
                           src={app.image}

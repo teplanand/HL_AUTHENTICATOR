@@ -23,6 +23,7 @@ import {
   extractAuthUserProfile,
   setStoredAuthRoles,
   setStoredAccessibleApps,
+  setStoredDashboardMeta,
   setStoredRefreshSession,
   setStoredUserProfile,
   setToken as setTokenV2,
@@ -98,9 +99,14 @@ export default function SignIn() {
         try {
           const dashboardResponse = await fetchDashboardApps().unwrap();
           setStoredAccessibleApps(dashboardResponse?.data ?? []);
+          setStoredDashboardMeta({
+            name: dashboardResponse?.name,
+            orgIconUrl: dashboardResponse?.orgIconUrl,
+          });
         } catch (dashboardError) {
           console.error("Dashboard apps fetch failed:", dashboardError);
           setStoredAccessibleApps([]);
+          setStoredDashboardMeta(null);
         }
 
         toast.success("Login successful!");

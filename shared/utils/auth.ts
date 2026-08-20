@@ -55,6 +55,11 @@ export type AuthUserProfile = {
   last_name?: string;
 };
 
+export type DashboardMeta = {
+  name?: string;
+  orgIconUrl?: string;
+};
+
 export type AccessibleApp = {
   appId?: string;
   appTitle?: string;
@@ -76,6 +81,7 @@ type DecodedTokenClaims = {
 const AUTH_USER_PROFILE_KEY = "userInfo";
 const LEGACY_AUTH_USER_PROFILE_KEY = "authUserProfile";
 const ACCESSIBLE_APPS_KEY = "accessibleApps";
+const DASHBOARD_META_KEY = "dashboardMeta";
 const AUTH_USER_ROLES_KEY = "authRoles";
 const AUTH_REFRESH_TOKEN_KEY = "authRefreshToken";
 const AUTH_USER_ID_KEY = "authUserId";
@@ -94,6 +100,7 @@ const USER_SCOPED_STORAGE_KEYS = [
   AUTH_USER_PROFILE_KEY,
   LEGACY_AUTH_USER_PROFILE_KEY,
   ACCESSIBLE_APPS_KEY,
+  DASHBOARD_META_KEY,
   AUTH_USER_ROLES_KEY,
   AUTH_REFRESH_TOKEN_KEY,
   AUTH_USER_ID_KEY,
@@ -230,6 +237,47 @@ export const removeToken = (): void => {
 
 export const setStoredAccessibleApps = (apps: AccessibleApp[]): void => {
   localStorage.setItem(ACCESSIBLE_APPS_KEY, JSON.stringify(apps));
+};
+
+export const setStoredDashboardMeta = (meta: DashboardMeta | null | undefined): void => {
+  const normalizedMeta = {
+    name: toTrimmedString(meta?.name),
+    orgIconUrl: toTrimmedString(meta?.orgIconUrl),
+  };
+
+  if (!normalizedMeta.name && !normalizedMeta.orgIconUrl) {
+    localStorage.removeItem(DASHBOARD_META_KEY);
+    return;
+  }
+
+  localStorage.setItem(DASHBOARD_META_KEY, JSON.stringify(normalizedMeta));
+};
+
+export const getStoredDashboardMeta = (): DashboardMeta | null => {
+  const raw = localStorage.getItem(DASHBOARD_META_KEY);
+
+  if (!raw) {
+    return null;
+  }
+
+  try {
+    const parsed = JSON.parse(raw) as DashboardMeta;
+    const normalizedMeta = {
+      name: toTrimmedString(parsed?.name) || undefined,
+      orgIconUrl: toTrimmedString(parsed?.orgIconUrl) || undefined,
+    };
+
+    if (!normalizedMeta.name && !normalizedMeta.orgIconUrl) {
+      localStorage.removeItem(DASHBOARD_META_KEY);
+      return null;
+    }
+
+    return normalizedMeta;
+  } catch (error) {
+    console.error("Error parsing stored dashboard meta:", error);
+    localStorage.removeItem(DASHBOARD_META_KEY);
+    return null;
+  }
 };
 
 export const setStoredAuthRoles = (roles: string[] | null | undefined): void => {

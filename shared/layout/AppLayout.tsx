@@ -24,7 +24,9 @@ import logo from "../assets/logo1.png";
 import NotificationDropdown from "../components/header/NotificationDropdown";
 import {
     getToken,
+    getStoredDashboardMeta,
     setStoredAccessibleApps,
+    setStoredDashboardMeta,
 } from "../utils/auth";
 import Breadcrumbs from "../components/common/Breadcrumbs";
 import { givePermission } from "../utils/givePermission";
@@ -59,6 +61,9 @@ const AppLayout: React.FC = () => {
     const navigate = useNavigate();
     useSidebarSubmenuScroll();
     const token = getToken();
+    const [dashboardMeta, setDashboardMeta] = React.useState(() =>
+        getStoredDashboardMeta(),
+    );
     const [currentApp, setCurrentApp] = React.useState(() =>
         resolveAccessibleAppForPath(location.pathname),
     );
@@ -96,7 +101,16 @@ const AppLayout: React.FC = () => {
         const loadAccessibleApps = async () => {
             try {
                 const response = await fetchDashboardApps().unwrap();
+                const nextDashboardMeta = {
+                    name: response?.name,
+                    orgIconUrl: response?.orgIconUrl,
+                };
+
                 setStoredAccessibleApps(response?.data ?? []);
+                setStoredDashboardMeta(nextDashboardMeta);
+                if (isMounted) {
+                    setDashboardMeta(nextDashboardMeta);
+                }
 
                 if (isMounted) {
                     setCurrentApp(resolveAccessibleAppForPath(location.pathname));
@@ -266,7 +280,13 @@ const AppLayout: React.FC = () => {
             router={router}
             theme={theme}
             branding={{
-                logo: <img src={logo} alt="eelcon Logo" className="w-full max-w-xs h-auto" />,
+                logo: (
+                    <img
+                        src={dashboardMeta?.orgIconUrl || logo}
+                        alt="Organization Logo"
+                        className="w-full max-w-xs h-auto"
+                    />
+                ),
                 title: "",
             }}
         >
@@ -288,5 +308,4 @@ const AppLayout: React.FC = () => {
 };
 
 export default AppLayout;
-
 

@@ -17,6 +17,25 @@ export interface OrderTrackingPayload {
   Other?: OrderTrackingOtherOptions;
 }
 
+export interface OrderTrackingProductsReportPayload {
+  UserName?: string;
+  ClientIP?: string;
+  data: {
+    branch_name?: string;
+    [key: string]: unknown;
+  };
+  Other?: OrderTrackingOtherOptions;
+}
+
+export interface OrderTrackingProductsReportResponse {
+  Status?: boolean;
+  Message?: string;
+  data?: string | null;
+  Records?: number;
+  status?: number | boolean;
+  message?: string;
+}
+
 export interface OrderTrackingRecord {
   [key: string]: unknown;
 }
@@ -65,6 +84,16 @@ export interface OrderTrackingUpdateData {
   on_time_delivery?: number | string | null;
   remark?: string;
   remarks?: unknown;
+  bd_remark?: string;
+  bd_remarks?: unknown;
+  business_development_remark?: string;
+  business_development_remarks?: unknown;
+  se_remark?: string;
+  se_remarks?: unknown;
+  de_remark?: string;
+  de_remarks?: unknown;
+  pl_remark?: string;
+  pl_remarks?: unknown;
   [key: string]: unknown;
 }
 
@@ -145,6 +174,29 @@ export const buildOrderTrackingPayload = (
   ...overrides,
 
 });
+
+export const buildOrderTrackingProductsReportPayload = (
+  overrides: Partial<OrderTrackingProductsReportPayload> = {}
+): OrderTrackingProductsReportPayload => {
+  const data = {
+    branch_name: "",
+    ...overrides.data,
+  };
+
+  const Other = {
+    doLog: true,
+    whCon: "1=1",
+    ...overrides.Other,
+  };
+
+  return {
+    UserName: "",
+    ClientIP: "::1",
+    ...overrides,
+    data,
+    Other,
+  };
+};
 
 export const buildSysConfigurationsWherePayload = ({
   division = "CP",
@@ -269,6 +321,30 @@ export const orderTrackingApi = createApi({
         body: buildUpdateSysConfigurationsPayload(data),
       }),
     }),
+    getBranchWiseOrderBookingReport: builder.mutation<
+      OrderTrackingProductsReportResponse,
+      Partial<OrderTrackingProductsReportPayload> | void
+    >({
+      query: (overrides) => ({
+        url: "/reports/GetProductsReport",
+        method: "POST",
+        body: buildOrderTrackingProductsReportPayload(
+          (overrides ?? {}) as Partial<OrderTrackingProductsReportPayload>
+        ),
+      }),
+    }),
+    getBranchWiseOrderAwaitingClearanceReport: builder.mutation<
+      OrderTrackingProductsReportResponse,
+      Partial<OrderTrackingProductsReportPayload> | void
+    >({
+      query: (overrides) => ({
+        url: "/reports/GetSparesReport",
+        method: "POST",
+        body: buildOrderTrackingProductsReportPayload(
+          (overrides ?? {}) as Partial<OrderTrackingProductsReportPayload>
+        ),
+      }),
+    }),
   }),
 });
 
@@ -279,4 +355,6 @@ export const {
   useGetSysConfigurationsMutation,
   useGetSysConfigurationByIdMutation,
   useUpdateSysConfigurationsMutation,
+  useGetBranchWiseOrderBookingReportMutation,
+  useGetBranchWiseOrderAwaitingClearanceReportMutation,
 } = orderTrackingApi;

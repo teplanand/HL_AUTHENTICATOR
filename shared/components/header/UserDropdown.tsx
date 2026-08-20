@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import {
   extractAuthUserProfile,
   getDecodedToken,
+  getStoredDashboardMeta,
   getStoredUserProfile,
   removeToken,
   setStoredUserProfile,
@@ -76,6 +77,7 @@ export default function UserDropdown() {
   const navigate = useNavigate();
   const token = getDecodedToken<DecodedUserToken>();
   const storedProfile = getStoredUserProfile();
+  const dashboardMeta = getStoredDashboardMeta();
   const derivedProfile = useMemo(
     () => (token ? extractAuthUserProfile({ user: token }) : null),
     [token]
@@ -98,6 +100,7 @@ export default function UserDropdown() {
 
   const userName =
     getFirstFilledValue(
+      dashboardMeta?.name,
       ...tokenSources.map((source) => source?.name),
       ...tokenSources.map((source) =>
         getFirstFilledValue(source?.first_name, source?.last_name)
@@ -150,7 +153,7 @@ export default function UserDropdown() {
         onClick={toggleDropdown}
         className="dropdown-toggle flex items-center gap-3 rounded-2xl border border-gray-200 bg-white px-2.5 py-1.5 shadow-theme-xs transition-all duration-200 hover:border-brand-200 hover:bg-brand-50/60 dark:border-gray-700 dark:bg-gray-800/80 dark:hover:border-brand-500/40 dark:hover:bg-gray-800"
       >
-        <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-[#F37440] to-[#C9552B] text-sm font-bold text-white shadow-lg shadow-[#F37440]/20">
+        <span className="flex h-8 w-8 items-center justify-center rounded-2xl bg-gradient-to-br from-[#F37440] to-[#C9552B] text-sm font-bold text-white shadow-lg shadow-[#F37440]/20">
           {avatarLetter}
         </span>
 
@@ -158,9 +161,7 @@ export default function UserDropdown() {
           <span className="max-w-[140px] truncate text-sm font-semibold text-gray-900 dark:text-white">
             {userName}
           </span>
-          <span className="max-w-[140px] truncate text-xs text-gray-500 dark:text-gray-400">
-            {employeeId}
-          </span>
+           
         </span>
 
         <svg
@@ -186,22 +187,15 @@ export default function UserDropdown() {
       >
         <div className="border-b border-gray-200 bg-gradient-to-br from-[#FFF8F4] via-[#FFFFFF] to-[#FFF2EA] px-4 py-4 dark:border-gray-700 dark:from-[#1B2435] dark:via-[#0F172A] dark:to-[#111827]">
           <div className="flex items-start gap-3">
-            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#F37440] to-[#C9552B] text-base font-bold text-white shadow-lg shadow-[#F37440]/20">
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#F37440] to-[#C9552B] text-base font-bold text-white shadow-lg shadow-[#F37440]/20">
               {avatarLetter}
             </span>
             <div className="min-w-0 flex-1">
               <p className="truncate text-base font-semibold text-gray-900 dark:text-white">
                 {userName}
               </p>
-              <p className="mt-1 break-all text-sm text-gray-600 dark:text-gray-300">
-                {userEmail}
-              </p>
-              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                {employeeId}
-              </p>
-              <p className="mt-2 inline-flex rounded-full bg-white px-2.5 py-1 text-[11px] font-semibold tracking-[0.14em] text-[#C9552B] shadow-sm dark:bg-white/10 dark:text-[#FFB08E]">
-                {userRole}
-              </p>
+              
+              
             </div>
           </div>
         </div>
