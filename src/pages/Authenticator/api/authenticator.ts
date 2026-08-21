@@ -638,6 +638,7 @@ const appendAuthenticatorFormValue = (
 
 const buildAuthenticatorAppFormData = (payload: CreateAuthenticatorAppPayload) => {
   const formData = new FormData();
+  const normalizedOrgIds = payload.orgIds.map((orgId) => String(orgId).trim()).filter(Boolean);
 
   appendAuthenticatorFormValue(formData, "appId", payload.appId);
   appendAuthenticatorFormValue(formData, "appTitle", payload.appTitle);
@@ -648,18 +649,45 @@ const buildAuthenticatorAppFormData = (payload: CreateAuthenticatorAppPayload) =
   appendAuthenticatorFormValue(formData, "backendUrl", payload.backendUrl);
   formData.append("isPublic", String(Boolean(payload.isPublic)));
 
-  payload.orgIds
-    .map((orgId) => String(orgId).trim())
-    .filter(Boolean)
-    .forEach((orgId) => {
-      formData.append("orgIds", orgId);
-    });
+  normalizedOrgIds.forEach((orgId) => {
+    formData.append("orgIds", orgId);
+  });
 
   if (payload.icon instanceof File) {
     formData.append("icon", payload.icon);
   }
 
   return formData;
+};
+
+const buildAuthenticatorAppRequestBody = (payload: CreateAuthenticatorAppPayload) => {
+  const normalizedPayload = {
+    ...payload,
+    appId: payload.appId?.trim(),
+    appTitle: payload.appTitle.trim(),
+    appDesc: payload.appDesc.trim(),
+    appCode: payload.appCode.trim(),
+    hrmsId: payload.hrmsId?.trim(),
+    frontUrl: payload.frontUrl?.trim(),
+    backendUrl: payload.backendUrl?.trim(),
+    orgIds: payload.orgIds.map((orgId) => String(orgId).trim()).filter(Boolean),
+  };
+
+  if (payload.icon instanceof File) {
+    return buildAuthenticatorAppFormData(normalizedPayload);
+  }
+
+  return {
+    appId: normalizedPayload.appId || undefined,
+    appTitle: normalizedPayload.appTitle,
+    appDesc: normalizedPayload.appDesc,
+    appCode: normalizedPayload.appCode,
+    hrmsId: normalizedPayload.hrmsId || undefined,
+    frontUrl: normalizedPayload.frontUrl || undefined,
+    backendUrl: normalizedPayload.backendUrl || undefined,
+    orgIds: normalizedPayload.orgIds,
+    isPublic: normalizedPayload.isPublic,
+  };
 };
 
 const normalizeAppValue = (value?: string | number | null) =>
@@ -1275,7 +1303,7 @@ export const authenticatorApi = createApi({
       query: (body) => ({
         url: "/api/apps/create",
         method: "POST",
-        body: buildAuthenticatorAppFormData(body),
+        body: buildAuthenticatorAppRequestBody(body),
       }),
       invalidatesTags: ["AuthenticatorApps"],
     }),
@@ -1288,7 +1316,7 @@ export const authenticatorApi = createApi({
           {
             url: "/api/apps/create",
             method: "POST",
-            body: buildAuthenticatorAppFormData(body),
+            body: buildAuthenticatorAppRequestBody(body),
           },
         ];
 
